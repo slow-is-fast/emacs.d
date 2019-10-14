@@ -1,4 +1,4 @@
-straight/
-README.el
-projectile-bookmarks.eld
-recentf
+*
+!README.org
+!init.el
+!.gitignore
