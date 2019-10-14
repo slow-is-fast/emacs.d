@@ -26,7 +26,7 @@
    make-backup-files nil                            ; No backup files
    line-spacing 5                                   ; Line Spacing
    auto-window-vscroll nil                          ; Lighten vertical scroll
-   confirm-kill-emacs 'yes-or-no-p                  ; Confirm before exiting Emacs
+;   confirm-kill-emacs 'yes-or-no-p                  ; Confirm before exiting Emacs
    cursor-in-non-selected-windows nil               ; Hide the cursor in inactive windows
 ;   fill-column 80                                   ; Set width for automatic line breaks
    indent-tabs-mode nil                             ; Stop using tabs to indent
