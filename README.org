@@ -166,8 +166,9 @@ The following packages just inherently make emacs look more polished and modern.
 Inserts Unicode symbols in locations like the menubar or the dashboard
 
 #+BEGIN_SRC emacs-lisp
-  ; (use-package all-the-icons
-  ; 	:straight t)
+  (use-package all-the-icons
+  :init (setq inhibit-compacting-font-caches t)
+  :straight t)
 #+END_SRC
 
 **** doom-modeline
@@ -190,10 +191,6 @@ A welcome screen that shows startup-info and other stuff
   :demand   t
   :straight t)
 
-  (use-package all-the-icons
-  :init (setq inhibit-compacting-font-caches t)
-  :straight t)
-
   (use-package page-break-lines
   :straight t
   :hook ((after-init . global-page-break-lines-mode))
@@ -203,7 +200,6 @@ A welcome screen that shows startup-info and other stuff
 
   (use-package org
   :straight org-plus-contrib)
-
 
   (use-package projectile
     :defer    t
@@ -241,8 +237,6 @@ A welcome screen that shows startup-info and other stuff
      :config
     (dashboard-setup-startup-hook))
 #+END_SRC
-
-*** Font
 
 ** Editor enhancements
 
