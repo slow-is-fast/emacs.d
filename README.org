@@ -9,6 +9,7 @@
 
 
 #+BEGIN_SRC emacs-lisp
+  (defconst *is-a-mac* (eq system-type 'darwin))    ; Check if is mac os s
   (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
   (set-default-coding-systems 'utf-8)               ; Default to utf-8 encoding
   (show-paren-mode 1)                               ; Show matching char
@@ -28,7 +29,7 @@
    auto-window-vscroll nil                          ; Lighten vertical scroll
 ;   confirm-kill-emacs 'yes-or-no-p                  ; Confirm before exiting Emacs
    cursor-in-non-selected-windows nil               ; Hide the cursor in inactive windows
-;   fill-column 80                                   ; Set width for automatic line breaks
+   fill-column 80                                   ; Set width for automatic line breaks
    indent-tabs-mode nil                             ; Stop using tabs to indent
    tab-width 4                                      ; Set width for tabs
    inhibit-startup-screen t                         ; Disable start-up screen
@@ -47,6 +48,8 @@
    x-stretch-cursor t)                              ; Stretch cursor to the glyph width
 
   (global-hl-line-mode 1)                           ; Highlight the current line
+
+
 
 #+END_SRC    
 
@@ -101,7 +104,7 @@
 
 
 
-** GUI
+* GUI
 
 *** Frames
 #+BEGIN_SRC emacs-lisp
@@ -127,7 +130,7 @@ The Doom-Themes are kind of the state of the art in stylish and modern Emacs-The
     :config
     ;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
     ;; may have their own settings.
-    (load-theme 'doom-molokai t)
+    (load-theme 'doom-peacock t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -219,7 +222,7 @@ A welcome screen that shows startup-info and other stuff
    	 :straight t
      :init
      (setq dashboard-startup-banner 1)
-     (setq dashboard-center-content t)
+     (setq dashboard-center-content nil)
      (setq dashboard-show-shortcuts t)
      (setq dashboard-/set-heading-icons t)
      (setq dashboard-set-file-icons t)
@@ -231,7 +234,7 @@ A welcome screen that shows startup-info and other stuff
     (dashboard-setup-startup-hook))
 #+END_SRC
 
-** Editor enhancements
+* Editor enhancements
 
 *** Ivy
 
@@ -311,4 +314,35 @@ Company-Mode is a Completion-Frontend
     :custom
     (company-minimum-prefix-length 1)
     (company-tooltip-align-annotations t))
+#+END_SRC
+
+
+
+* Version Control
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :straight t
+  :hook ((magit-popup-mode-hook . no-trailing-whitespace))
+  :init (gsetq magit-diff-refine-hunk t)
+  :bind (([(meta f12)] . magit-status)  ;; Hint: customize `magit-repository-directories' so that you can use C-u M-F12 to
+       ("C-x g"      . magit-status)
+       ("C-x M-g"    . magit-dispatch-popup)
+       :map magit-status-mode-map
+       ("C-M-<up>"   . magit-section-up)
+       :map vc-prefix-map
+       ("f"          . vc-git-grep))
+  :config (with-eval-after-load 'magit-todos
+      (magit-todos-mode))
+  (when *is-a-mac* (add-hook 'magit-mode-hook (lambda () (local-unset-key [(meta h)])))))
+
+(use-package magit-todos
+  :defer    t
+  :straight t)
+
+(use-package magit-org-todos
+  :after    org
+  :straight t
+  :hook     ((after-init . magit-org-todos-autoinsert)))
+
 #+END_SRC
