@@ -214,13 +214,6 @@ A welcome screen that shows startup-info and other stuff
            ".cquery")
                projectile-project-root-files-top-down-recurring)))
 
-  (defun my-dashboard-banner ()
-  """Set a dashboard banner including information on package initialization
-   time and garbage collections."""
-  (setq dashboard-banner-logo-title
-        (format "Emacs ready in %.2f seconds with %d garbage collections."
-                (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
-
 
    (use-package dashboard
    	 :straight t
