@@ -1,0 +1,106 @@
+
+load custorm.el
+
+#+begin_src emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+#+end_src
+
+
+* init ui 
+** hide menu bar
+** hide tool bar 
+** skip make backup file
+#+begin_src emacs-lisp
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(setq make-backup-files nil) ; stop creating ~ files
+#+end_src
+
+
+** titlebar
+
+#+begin_src emacs-lisp
+(setq frame-title-format nil)
+(add-to-list 'frameset-filter-alist '(ns-transparent-titlebar . :never))
+(add-to-list 'frameset-filter-alist '(ns-appearance . :never))
+
+(add-to-list 'default-frame-alist '(ns-appearance . 'light))
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+#+end_src
+
+
+We set gc-cons-threshold to its maximum value, to prevent any garbage collection from happening during load time. We also reset this value in the Epilogue.
+
+#+BEGIN_SRC emacs-lisp
+(setq gc-cons-threshold most-positive-fixnum)
+#+END_SRC
+
+Set the load path to the directories from where I sometimes load things outside the package system. Note that the path for specific packages like =org-mode= (which I load from a checkout of its git repository) is set as part of their =use-package= declarations, so they don't appear here.
+
+#+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/lisp")
+#+end_src
+
+
+
+
+
+
+Save the place of the cursor in each file, and restore it upon opening it again.
+
+#+begin_src emacs-lisp
+(use-package saveplace
+  :defer nil
+  :config
+  (save-place-mode))
+#+end_src
+
+
+* System-specific configuration
+#+begin_src emacs-lisp
+(cond ((eq system-type 'darwin)
+  (custom-set-variables
+    '(mac-command-modifier 'meta)
+    '(mac-option-modifier 'alt)
+    '(mac-right-option-modifier 'super))
+  )
+)
+#+end_src
+
+* Appearance
+#+begin_src emacs-lisp
+(when (>= emacs-major-version 26)
+  (pixel-scroll-mode))
+#+end_src
+
+** theme
+#+begin_src emacs-lisp
+(use-package doom-themes)
+(load-theme 'doom-nord-light)
+#+end_src
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
