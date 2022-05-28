@@ -1,4 +1,6 @@
-./settings.el
+settings.el
 auto-save-list/
 elpa/
 tutorial/
+places
+*~
