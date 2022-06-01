@@ -1,26 +1,29 @@
-
-load custorm.el
-
+* load custorm.el
 #+begin_src emacs-lisp
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 #+end_src
 
+* Appearance
+#+begin_src emacs-lisp
+(when (>= emacs-major-version 26)
+  (pixel-scroll-mode))
+#+end_src
 
-* init ui 
+* init ui
 ** hide menu bar
-** hide tool bar 
+** hide tool bar
 ** skip make backup file
 #+begin_src emacs-lisp
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (setq make-backup-files nil) ; stop creating ~ files
-(setq-default line-spacing 9);
+(setq-default line-spacing 6); line spacing
+;(setq-default cursor-type 'hbox);
+(set-cursor-color "#ffffff")
 #+end_src
 
-
 ** titlebar
-
 #+begin_src emacs-lisp
 (setq frame-title-format nil)
 (add-to-list 'frameset-filter-alist '(ns-transparent-titlebar . :never))
@@ -29,6 +32,15 @@ load custorm.el
 (add-to-list 'default-frame-alist '(ns-appearance . 'light))
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 #+end_src
+
+** Font
+use "Fira Code"
+#+BEGIN_SRC emacs-lisp
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
+(when (window-system)
+  (set-frame-font "Fira Code"))
+#+END_SRC
 
 
 We set gc-cons-threshold to its maximum value, to prevent any garbage collection from happening during load time. We also reset this value in the Epilogue.
@@ -43,20 +55,14 @@ Set the load path to the directories from where I sometimes load things outside 
 (add-to-list 'load-path "~/.emacs.d/lisp")
 #+end_src
 
-
-
-
-
-
+** save-place-mode
 Save the place of the cursor in each file, and restore it upon opening it again.
-
 #+begin_src emacs-lisp
 (use-package saveplace
   :defer nil
   :config
   (save-place-mode))
 #+end_src
-
 
 * System-specific configuration
 #+begin_src emacs-lisp
@@ -69,36 +75,19 @@ Save the place of the cursor in each file, and restore it upon opening it again.
 )
 #+end_src
 
-* Appearance
-#+begin_src emacs-lisp
-(when (>= emacs-major-version 26)
-  (pixel-scroll-mode))
-#+end_src
-
 ** theme
 #+begin_src emacs-lisp
-(use-package doom-themes)
-(load-theme 'github-modern t) ; doom-nord-light)
+  (use-package doom-themes)
+  (load-theme 'github-modern t) ; doom-nord-light)
 #+end_src
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+** Window Size and Position
+#+BEGIN_SRC emacs-lisp
+(when window-system
+	(set-frame-position (selected-frame) 100 50)
+	(set-frame-size (selected-frame) 150 55))
+#+END_SRC
 
 
 
