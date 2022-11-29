@@ -90,7 +90,11 @@ Save the place of the cursor in each file, and restore it upon opening it again.
 #+END_SRC
 
 
-
+* Org-mode
+Use syntax highlighting in source blocks while editing.
+#+BEGIN_SRC emacs-lisp
+(setq org-src-fontify-natively t)
+#+END_SRC
 
 
 
