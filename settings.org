@@ -26,6 +26,7 @@
 #+begin_src emacs-lisp
   (menu-bar-mode -1)
   (tool-bar-mode -1)
+  (scroll-bar-mode -1)
   (setq make-backup-files nil) ; stop creating ~ files
   (setq-default line-spacing 6); line spacing
   ;(setq-default cursor-type 'hbox);
@@ -135,6 +136,8 @@ Save the place of the cursor in each file, and restore it upon opening it again.
   ;; `SC_MAXIMIZE' parameter.
   (when (eq system-type 'windows-nt)
     (w32-send-sys-command 61488)))
+  (when (eq system-type 'darwin)
+    (toggle-frame-maximized))
 (add-hook 'window-setup-hook 'maximize-frame t)
 #+END_SRC
 
@@ -144,8 +147,8 @@ Save the place of the cursor in each file, and restore it upon opening it again.
   (when (eq system-type 'windows-nt)
     (setq default-directory "C:\\Users\\Admin")
     (setenv "HOME" "C:\\Users\\Admin"))
-  ;;(when (eq system-type 'darwin)
-  ;;  (setenv 'HOME "~"))
+;;  (when (eq system-type 'darwin)
+;;   (setenv "HOME" "~"))
 #+end_src
 
 * 中文字体配置

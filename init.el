@@ -1,10 +1,13 @@
 ;; Keep track of loading time
 (defconst emacs-start-time (current-time))
-;; initalize all ELPA packages
-(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                        ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
-(package-initialize)
 (require 'package)
+;; initalize all ELPA packages
+; (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                        ; ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)                        
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
 
 (setq package-enable-at-startup nil)
 (let ((elapsed (float-time (time-subtract (current-time)
@@ -35,5 +38,5 @@
 ;; Message how long it took to load everything (minus packages)
 (let ((elapsed (float-time (time-subtract (current-time)
                             emacs-start-time))))
-(message "Loading settings...done (%.3fs)" elapsed))
 (put 'upcase-region 'disabled nil)
+(message "Loading settings...done (%.3fs)" elapsed))
