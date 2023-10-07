@@ -1,3 +1,11 @@
+* File Encoding
+#+begin_src
+(set-language-environment 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-keyboard-coding-system 'utf-8-unix)
+(set-terminal-coding-system 'utf-8-unix)
+#+end_src
+
 * load custorm.el
 #+begin_src emacs-lisp
 (setq custom-file "~/.emacs.d/custom.el")
@@ -14,24 +22,63 @@
 ** hide menu bar
 ** hide tool bar
 ** skip make backup file
+** hide splash screen and startup messages
 #+begin_src emacs-lisp
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(setq make-backup-files nil) ; stop creating ~ files
-(setq-default line-spacing 6); line spacing
-;(setq-default cursor-type 'hbox);
-(set-cursor-color "#ffffff")
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (setq make-backup-files nil) ; stop creating ~ files
+  (setq-default line-spacing 6); line spacing
+  ;(setq-default cursor-type 'hbox);
+  (set-cursor-color "#ffffff")
+  (setq inhibit-startup-screen t)
+  (setq initial-scratch-message nil)
 #+end_src
 
 ** titlebar
 #+begin_src emacs-lisp
-(setq frame-title-format nil)
-(add-to-list 'frameset-filter-alist '(ns-transparent-titlebar . :never))
-(add-to-list 'frameset-filter-alist '(ns-appearance . :never))
+  ;; Clean up the title bar content
+  (setq-default frame-title-format nil)
+  (setq-default ns-use-proxy-icon nil)
+  (add-to-list 'frameset-filter-alist '(ns-transparent-titlebar . :never))
+  (add-to-list 'frameset-filter-alist '(ns-appearance . :never))
 
-(add-to-list 'default-frame-alist '(ns-appearance . 'light))
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . 'light))
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 #+end_src
+
+** Behaviours of GUI frames
+#+BEGIN_SRC emacs-lisp
+  ;; Optimization
+  (setq-default cursor-in-non-selected-windows nil)
+  (setq highlight-nonselected-windows nil)
+  (setq idle-update-delay 1.0)
+  (setq frame-resize-pixelwise t)
+#+END_SRC
+*** Custom Face
+#+BEGIN_SRC emacs-lisp
+;; Customize faces
+(set-face-attribute 'button nil
+                    :underline "#959595"
+                    :foreground 'unspecified)
+
+(set-face-attribute 'link nil :foreground 'unspecified)
+(set-face-attribute 'fill-column-indicator nil :height 0.15)
+(set-face-background 'fringe (face-attribute 'default :background))
+
+;; Cursor faces
+(setq-default cursor-type '(bar . 1))
+(setq-default blink-cursor-mode nil)
+
+;; highlight current line
+(add-hook 'after-init-hook #'(lambda ()
+  (global-hl-line-mode 1)))
+#+END_SRC
+*** Mode Line
+#+BEGIN_SRC emacs-lisp
+;; Mode Line settings
+(setq-default mode-line-compact t)
+(setq-default line-number-mode nil)
+#+END_SRC
 
 ** Font
 use "Fira Code"
@@ -41,7 +88,6 @@ use "Fira Code"
 (when (window-system)
   (set-frame-font "Fira Code"))
 #+END_SRC
-
 
 We set gc-cons-threshold to its maximum value, to prevent any garbage collection from happening during load time. We also reset this value in the Epilogue.
 
@@ -77,24 +123,84 @@ Save the place of the cursor in each file, and restore it upon opening it again.
 
 ** theme
 #+begin_src emacs-lisp
-  (use-package doom-themes)
   (load-theme 'github-modern t) ; doom-nord-light)
 #+end_src
 
-
 ** Window Size and Position
 #+BEGIN_SRC emacs-lisp
-(when window-system
-	(set-frame-position (selected-frame) 100 50)
-	(set-frame-size (selected-frame) 150 55))
+(defun maximize-frame ()
+  "Maximizes the active frame in Windows"
+  (interactive)
+  ;; Send a `WM_SYSCOMMAND' message to the active frame with the
+  ;; `SC_MAXIMIZE' parameter.
+  (when (eq system-type 'windows-nt)
+    (w32-send-sys-command 61488)))
+(add-hook 'window-setup-hook 'maximize-frame t)
 #+END_SRC
 
+
+* Environment Variables
+#+begin_src emacs-lisp
+  (when (eq system-type 'windows-nt)
+    (setq default-directory "C:\\Users\\Admin")
+    (setenv "HOME" "C:\\Users\\Admin"))
+  ;;(when (eq system-type 'darwin)
+  ;;  (setenv 'HOME "~"))
+#+end_src
+
+* 中文字体配置
+#+begin_src emacs-lisp
+  (require 'cnfonts)
+  (cnfonts-mode 1)
+  (setq cnfonts-profiles
+    '("program" "org-mode" "read-book"))
+#+end_src
+
+* PYIM
+#+begin_src emacs-lisp
+(require 'pyim)
+(require 'pyim-basedict)
+(pyim-basedict-enable)
+(setq default-input-method "pyim")
+(setq pyim-default-scheme 'quanpin)
+(setq pyim-page-tooltip 'popup)
+(setq pyim-page-length 5)
+#+end_src
+
+* Encoding
+#+BEGIN_SRC emacs-lisp
+;; Set UTF-8 as the default coding system
+(set-charset-priority 'unicode)
+(set-default-coding-systems 'utf-8)
+(set-selection-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-clipboard-coding-system 'utf-8)
+(set-file-name-coding-system 'utf-8)
+(set-buffer-file-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setq locale-coding-system 'utf-8)
+#+END_SRC
+
+* MISC
+#+BEGIN_SRC emacs-lisp
+  (setq use-short-answers t)
+  (setq-default auto-save-default nil)
+  (setq-default tab-width 4)
+  
+#+END_SRC
 
 * Org-mode
 Use syntax highlighting in source blocks while editing.
 #+BEGIN_SRC emacs-lisp
-(setq org-src-fontify-natively t)
+    (setq org-src-fontify-natively t)
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((dot .t )))
+
+    (defun my/fix-inline-images ()
+    (when org-inline-image-overlays
+      (org-redisplay-inline-images)))
+
+  (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+  (setq org-confirm-babel-evaluate nil)
 #+END_SRC
-
-
-

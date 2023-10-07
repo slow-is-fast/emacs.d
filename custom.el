@@ -9,7 +9,7 @@
  '(ns-command-modifier 'meta)
  '(ns-right-alternate-modifier 'super)
  '(package-selected-packages
-   '(github-modern-theme use-package sublime-themes doom-themes)))
+   '(popup pyim-basedict cnfonts pyim github-modern-theme use-package sublime-themes doom-themes)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

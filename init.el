@@ -11,6 +11,14 @@
                             emacs-start-time))))
 (message "Loaded packages in %.3fs" elapsed))
 
+;; UTF-8 as default encoding
+(set-language-environment 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-keyboard-coding-system 'utf-8-unix)
+
+;; add this especially on Windows, else python output problem
+(set-terminal-coding-system 'utf-8-unix)
+
 ;; Load use-package, used for loading packages
 (require 'use-package)
 
@@ -28,3 +36,4 @@
 (let ((elapsed (float-time (time-subtract (current-time)
                             emacs-start-time))))
 (message "Loading settings...done (%.3fs)" elapsed))
+(put 'upcase-region 'disabled nil)
